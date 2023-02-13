@@ -36,7 +36,6 @@ export const useWeather = (
   useEffect(() => {
     setIsLoading(true);
     if (location) {
-      console.log("location...", location);
       const url = useMockData
         ? `./mock-data/weather_${unit}.json`
         : `${baseUrl}?lat=${location.position.latitude}&lon=${location.position.longitude}&exclude=minutely,alerts&appid=${apiKey}`;
@@ -44,7 +43,6 @@ export const useWeather = (
       axios
         .get(url)
         .then((response) => {
-          console.log("response.....", response);
           setCurrent(response.data.current);
           setHourly(response.data.hourly);
           setDaily(response.data.daily);
@@ -59,7 +57,6 @@ export const useWeather = (
   }, [location, unit, useMockData, baseUrl, apiKey, handleError]);
 
   const setCurrent = (data: any) => {
-    console.log("DATA.....", data);
     setCurrentWeather({
       dt: data?.dt,
       weather: {
@@ -79,7 +76,6 @@ export const useWeather = (
   };
 
   const setHourly = (data: any) => {
-    console.log("hourly data", data);
     let hourly: CurrentWeatherModel[] = [];
     data.slice(0, 24).forEach((item: any) => {
       hourly.push({
@@ -103,7 +99,6 @@ export const useWeather = (
   };
 
   const setDaily = (data: any) => {
-    console.log("daily data", data);
     let daily: DailyWeatherDetailsModel[] = [];
     data.slice(1).forEach((item: any) => {
       daily.push({
