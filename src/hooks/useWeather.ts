@@ -18,7 +18,7 @@ export const useWeather = (
   useMockData: boolean
 ) => {
   const baseUrl = "https://api.openweathermap.org/data/3.0/onecall";
-  const apiKey = "38ed08df39bae8605c8bf0981fe34996";
+  const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
 
   const { location } = useLocation(locationName, useMockData);
 

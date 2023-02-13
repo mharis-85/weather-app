@@ -5,14 +5,11 @@ import { EmptyLocationModel, LocationModel } from "../models";
 
 export const useLocation = (locationName: string, useMockData: boolean) => {
   console.log("locationName", locationName);
-  //const apiKey = "AIzaSyCb6v8dn-EEocdMBictQLSd72BwbYi4_xc";
-  const apiKey = "7616516b8150a1f2d2682a7e68d0cc65";
-  const loc_apiKey = "439d4b804bc8187953eb36d2a8c26a02";
+  const apiKey = process.env.REACT_APP_OPENWEATHER_API_KEY;
+  const loc_apiKey = process.env.REACT_APP_OPENWEATHER_LOCATION_API_KEY;
+  console.log("loc_apiKey", loc_apiKey);
 
-  const geocodeBaseUrl = "https://api.openweathermap.org/data/2.5/weather";
-  // const gecodeByName = "https://openweathermap.org/data/2.5/find";
-  //REACT_APP_GEOLOCATION_GEOCODE_BASEURL = "https://maps.googleapis.com/maps/api/geocode/json"
-  //REACT_APP_GEOLOCATION_API_KEY = "AIzaSyCb6v8dn-EEocdMBictQLSd72BwbYi4_xc"
+  const geocodeBaseUrl = "https://api.openweathermap.org/data/2.5/";
 
   const [location, setLocation] = useState<LocationModel>(EmptyLocationModel);
   const handleError = useErrorHandler();
@@ -23,8 +20,7 @@ export const useLocation = (locationName: string, useMockData: boolean) => {
         .get(
           useMockData
             ? "./mock-data/locality.json"
-            : //"./mock-data/locality.json"
-              `${geocodeBaseUrl}/?lat=${position.coords.latitude}&lon=${position.coords.longitude}&limit=5&appid=${apiKey}`
+            : `${geocodeBaseUrl}weather/?lat=${position.coords.latitude}&lon=${position.coords.longitude}&limit=5&appid=${apiKey}`
         )
         .then((res: any) => {
           console.log("res", res);
@@ -54,14 +50,12 @@ export const useLocation = (locationName: string, useMockData: boolean) => {
           .get(
             useMockData
               ? "./mock-data/latlong.json"
-              : `https://openweathermap.org/data/2.5/find?q=${locationName}&appid=${loc_apiKey}&units=metric`
+              : `${geocodeBaseUrl}find?q=${locationName}&appid=${loc_apiKey}&units=metric`
           )
           .then((res: any) => {
             if (res && res.data) {
               console.log("loc res", res);
               const location = res.data.list[0].name;
-              //const formattedAddress =
-              //res.data.results[0].formatted_address.split(",");
               setLocation({
                 position: {
                   latitude: res.data.list[0].coord.lat,
